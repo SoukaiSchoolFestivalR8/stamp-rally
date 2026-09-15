@@ -3,30 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>スタンプラリー</title>
+  <title>文化祭スタンプラリー</title>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
+    body { font-family: sans-serif; text-align: center; padding: 10px; margin: 0; background-color: #f8f9fa; }
+    
+    /* 上部の画面切り替えタブ */
+    .tab-menu {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      flex: 1;
+      max-width: 180px;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border: 2px solid #007bff;
+      background-color: white;
+      color: #007bff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    /* 各画面の表示・非表示切り替え */
+    .page-content {
+      display: none;
+    }
+    .page-content.active {
+      display: block;
+    }
+
+    /* --- スタンプラリー画面のスタイル --- */
     #reader { width: 100%; max-width: 400px; margin: 10px auto; border: 2px dashed #ccc; }
     .stamp-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-    .stamp-box { width: 90px; height: 90px; border: 2px solid #333; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; background-color: #f0f0f0; }
+    .stamp-box { width: 95px; height: 95px; border: 2px solid #333; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; background-color: #ffffff; }
     .stamp-box.acquired { background-color: #ffe0b2; border-color: #ff9800; color: #e65100; position: relative; }
     .stamp-box.acquired::after { content: "済"; position: absolute; font-size: 40px; color: #d32f2f; font-weight: bold; opacity: 0.8; transform: rotate(-15deg); }
-    button { padding: 12px 24px; font-size: 16px; border-radius: 8px; border: none; background: #007bff; color: white; cursor: pointer; }
+    .scan-btn { padding: 14px 28px; font-size: 18px; border-radius: 8px; border: none; background: #28a745; color: white; cursor: pointer; font-weight: bold; }
+
+    /* --- マップ画面のスタイル --- */
+    .map-container {
+      position: relative;
+      max-width: 400px;
+      margin: 10px auto;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: #ffffff;
+    }
+    .map-image { width: 100%; display: block; }
+    .map-pin {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #757575; /* 未訪問：グレー */
+      color: white;
+      font-weight: bold;
+      line-height: 32px;
+      font-size: 14px;
+      border: 2px solid white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      transform: translate(-50%, -50%);
+      transition: background-color 0.3s ease;
+    }
+    .map-pin.acquired { background-color: #ff3d00; } /* 訪問済み：赤 */
+
+    /* ピン位置の設定 */
+    #pin-booth1 { top: 30%; left: 25%; }
+    #pin-booth2 { top: 50%; left: 70%; }
+    #pin-booth3 { top: 80%; left: 40%; }
   </style>
 </head>
 <body>
 
-  <h2>文化祭スタンプラリー</h2>
-  
-  <button id="start-scan-btn" onclick="startScanner()">📷 カメラでQRを読み込む</button>
-  <div id="reader" style="display:none;"></div>
+  <h2>文化祭アプリ</h2>
 
-  <h3>獲得状況</h3>
-  <div class="stamp-grid">
-    <div id="stamp-booth1" class="stamp-box">ブース 1</div>
-    <div id="stamp-booth2" class="stamp-box">ブース 2</div>
-    <div id="stamp-booth3" class="stamp-box">ブース 3</div>
+  <!-- 上部ナビゲーションボタン -->
+  <div class="tab-menu">
+    <button id="btn-stamp" class="tab-btn active" onclick="switchTab('stamp')">スタンプラリー</button>
+    <button id="btn-map" class="tab-btn" onclick="switchTab('map')">校内マップ</button>
+  </div>
+
+  <!-- 【画面1】スタンプラリー画面 -->
+  <div id="page-stamp" class="page-content active">
+    <button id="start-scan-btn" class="scan-btn" onclick="startScanner()">📷 カメラでQRを読み込む</button>
+    <div id="reader" style="display:none;"></div>
+
+    <h3>獲得スタンプ一覧</h3>
+    <div class="stamp-grid">
+      <div id="stamp-booth1" class="stamp-box">ブース 1</div>
+      <div id="stamp-booth2" class="stamp-box">ブース 2</div>
+      <div id="stamp-booth3" class="stamp-box">ブース 3</div>
+    </div>
+  </div>
+
+  <!-- 【画面2】校内マップ画面 -->
+  <div id="page-map" class="page-content">
+    <h3>校内マップ</h3>
+    <p style="font-size: 12px; color: #666;">※スタンプをゲットするとピンの色が赤に変わります</p>
+    <div class="map-container">
+      <img src="https://via.placeholder.com/400x300?text=School+Map" alt="校内マップ" class="map-image">
+      <div id="pin-booth1" class="map-pin">1</div>
+      <div id="pin-booth2" class="map-pin">2</div>
+      <div id="pin-booth3" class="map-pin">3</div>
+    </div>
   </div>
 
   <script>
@@ -36,6 +124,27 @@
     window.onload = function() {
       updateUI();
     };
+
+    // 画面切り替え処理
+    function switchTab(tabName) {
+      // カメラが起動中なら停止する
+      stopScanner();
+
+      // タブのボタンと表示エリアを一度すべて非アクティブにする
+      document.getElementById('btn-stamp').classList.remove('active');
+      document.getElementById('btn-map').classList.remove('active');
+      document.getElementById('page-stamp').classList.remove('active');
+      document.getElementById('page-map').classList.remove('active');
+
+      // 選択されたタブだけを表示する
+      if (tabName === 'stamp') {
+        document.getElementById('btn-stamp').classList.add('active');
+        document.getElementById('page-stamp').classList.add('active');
+      } else if (tabName === 'map') {
+        document.getElementById('btn-map').classList.add('active');
+        document.getElementById('page-map').classList.add('active');
+      }
+    }
 
     function startScanner() {
       document.getElementById('reader').style.display = 'block';
@@ -78,12 +187,24 @@
     function updateUI() {
       STAMPS.forEach(boothId => {
         const isAcquired = localStorage.getItem("stamp_" + boothId) === "true";
-        const element = document.getElementById("stamp-" + boothId);
-        if (element) {
+        
+        // スタンプ枠の更新
+        const stampElement = document.getElementById("stamp-" + boothId);
+        if (stampElement) {
           if (isAcquired) {
-            element.classList.add("acquired");
+            stampElement.classList.add("acquired");
           } else {
-            element.classList.remove("acquired");
+            stampElement.classList.remove("acquired");
+          }
+        }
+
+        // 地図ピンの更新
+        const pinElement = document.getElementById("pin-" + boothId);
+        if (pinElement) {
+          if (isAcquired) {
+            pinElement.classList.add("acquired");
+          } else {
+            pinElement.classList.remove("acquired");
           }
         }
       });
