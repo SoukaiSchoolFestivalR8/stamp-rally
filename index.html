@@ -8,144 +8,227 @@
   <style>
     body { font-family: sans-serif; text-align: center; padding: 10px; margin: 0; background-color: #f8f9fa; }
     
-    /* 上部の画面切り替えタブ */
-    .tab-menu {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .tab-btn {
-      flex: 1;
-      max-width: 180px;
-      padding: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      border: 2px solid #007bff;
-      background-color: white;
-      color: #007bff;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .tab-btn.active {
-      background-color: #007bff;
-      color: white;
-    }
+    /* ① メインタブ（左：マップ / 右：スタンプラリー） */
+    .tab-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+    .tab-btn { flex: 1; max-width: 180px; padding: 12px; font-size: 16px; font-weight: bold; border: 2px solid #007bff; background-color: white; color: #007bff; border-radius: 8px; cursor: pointer; }
+    .tab-btn.active { background-color: #007bff; color: white; }
 
-    /* 各画面の表示・非表示切り替え */
-    .page-content {
-      display: none;
-    }
-    .page-content.active {
-      display: block;
-    }
+    /* サブタブ（マップ切替用） */
+    .sub-tab-menu { display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; }
+    .sub-tab-btn { padding: 8px 14px; font-size: 14px; border: 1px solid #6c757d; background-color: white; color: #333; border-radius: 20px; cursor: pointer; }
+    .sub-tab-btn.active { background-color: #6c757d; color: white; font-weight: bold; }
 
-    /* --- スタンプラリー画面のスタイル --- */
-    #reader { width: 100%; max-width: 400px; margin: 10px auto; border: 2px dashed #ccc; }
-    .stamp-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-    .stamp-box { width: 95px; height: 95px; border: 2px solid #333; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; background-color: #ffffff; }
-    .stamp-box.acquired { background-color: #ffe0b2; border-color: #ff9800; color: #e65100; position: relative; }
-    .stamp-box.acquired::after { content: "済"; position: absolute; font-size: 40px; color: #d32f2f; font-weight: bold; opacity: 0.8; transform: rotate(-15deg); }
-    .scan-btn { padding: 14px 28px; font-size: 18px; border-radius: 8px; border: none; background: #28a745; color: white; cursor: pointer; font-weight: bold; }
+    .page-content, .map-section { display: none; }
+    .page-content.active, .map-section.active { display: block; }
 
-    /* --- マップ画面のスタイル --- */
-    .map-container {
-      position: relative;
-      max-width: 400px;
-      margin: 10px auto;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      overflow: hidden;
-      background-color: #ffffff;
-    }
+    /* ② マップ表示エリア */
+    .map-container { position: relative; max-width: 400px; margin: 0 auto; border: 2px solid #ddd; border-radius: 12px; overflow: hidden; background-color: #ffffff; }
     .map-image { width: 100%; display: block; }
+
+    /* ⑤ Googleマップ風ピンデザイン (④未訪問:赤 / 訪問済:緑) */
     .map-pin {
       position: absolute;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: #757575; /* 未訪問：グレー */
-      color: white;
-      font-weight: bold;
-      line-height: 32px;
-      font-size: 14px;
-      border: 2px solid white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      transform: translate(-50%, -50%);
-      transition: background-color 0.3s ease;
+      width: 28px;
+      height: 38px;
+      transform: translate(-50%, -100%);
+      cursor: pointer;
+      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.4));
+      transition: transform 0.2s ease;
     }
-    .map-pin.acquired { background-color: #ff3d00; } /* 訪問済み：赤 */
+    .map-pin:hover { transform: translate(-50%, -105%) scale(1.1); }
+    
+    /* ④ ピンの色指定 */
+    .map-pin path { fill: #dc3545; } /* 未訪問: 赤 */
+    .map-pin.acquired path { fill: #28a745; } /* 訪問済: 緑 */
 
-    /* ピン位置の設定 */
-    #pin-booth1 { top: 30%; left: 25%; }
-    #pin-booth2 { top: 50%; left: 70%; }
-    #pin-booth3 { top: 80%; left: 40%; }
+    /* ピンの座標設定（※実際の画像に合わせて % を調整してください） */
+    /* 東館（6個: ピン1〜ピン6） */
+    #pin-east-1 { top: 20%; left: 30%; } /* 中2 */
+    #pin-east-2 { top: 35%; left: 60%; } /* 中3 */
+    #pin-east-3 { top: 50%; left: 25%; } /* 自衛隊（晴雨兼用） */
+    #pin-east-4 { top: 65%; left: 75%; } /* 中1 */
+    #pin-east-5 { top: 80%; left: 40%; } /* 高2-3 */
+    #pin-east-6 { top: 85%; left: 70%; } /* 合同展示 */
+
+    /* 西館（5個: ピン7〜ピン11） */
+    #pin-west-7 { top: 25%; left: 35%; }  /* 高2-2 */
+    #pin-west-8 { top: 40%; left: 70%; }  /* 高1-2 */
+    #pin-west-9 { top: 55%; left: 30%; }  /* 高2-1 */
+    #pin-west-10 { top: 70%; left: 65%; } /* 高1-1 */
+    #pin-west-11 { top: 85%; left: 45%; } /* ボート部 */
+
+    /* 飲食エリア（4個: ピン12〜ピン15） */
+    #pin-food-12 { top: 30%; left: 20%; } /* 高1-3 */
+    #pin-food-13 { top: 30%; left: 70%; } /* 高3-2 */
+    #pin-food-14 { top: 60%; left: 30%; } /* 高3-1 */
+    #pin-food-15 { top: 85%; left: 50%; } /* 自衛隊（晴雨兼用） */
+
+    /* ⑥ スタンプカード表示 (5・5・5レイアウト) */
+    .stamp-group { margin-bottom: 20px; }
+    .stamp-group-title { font-size: 16px; font-weight: bold; color: #495057; text-align: left; max-width: 320px; margin: 0 auto 8px auto; border-bottom: 2px solid #dee2e6; padding-bottom: 4px; }
+    .stamp-grid { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; max-width: 350px; margin: 0 auto; }
+    .stamp-box { width: 60px; height: 60px; border: 2px solid #6c757d; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; background-color: #ffffff; font-size: 12px; }
+    .stamp-box.acquired { background-color: #d4edda; border-color: #28a745; color: #155724; position: relative; }
+    .stamp-box.acquired::after { content: "済"; position: absolute; font-size: 28px; color: #28a745; font-weight: bold; opacity: 0.8; }
+    
+    #reader { width: 100%; max-width: 400px; margin: 10px auto; border: 2px dashed #ccc; }
+    .scan-btn { padding: 14px 28px; font-size: 18px; border-radius: 8px; border: none; background: #28a745; color: white; cursor: pointer; font-weight: bold; margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
   <h2>文化祭アプリ</h2>
 
-  <!-- 上部ナビゲーションボタン -->
+  <!-- ① メインタブ（左：校内マップ / 右：スタンプラリー） -->
   <div class="tab-menu">
-    <button id="btn-stamp" class="tab-btn active" onclick="switchTab('stamp')">スタンプラリー</button>
-    <button id="btn-map" class="tab-btn" onclick="switchTab('map')">校内マップ</button>
+    <button id="btn-map" class="tab-btn active" onclick="switchMainTab('map')">校内マップ</button>
+    <button id="btn-stamp" class="tab-btn" onclick="switchMainTab('stamp')">スタンプラリー</button>
   </div>
 
-  <!-- 【画面1】スタンプラリー画面 -->
-  <div id="page-stamp" class="page-content active">
-    <button id="start-scan-btn" class="scan-btn" onclick="startScanner()">📷 カメラでQRを読み込む</button>
-    <div id="reader" style="display:none;"></div>
+  <!-- 【左画面】校内マップエリア -->
+  <div id="page-map" class="page-content active">
+    <!-- サブタブ -->
+    <div class="sub-tab-menu">
+      <button id="btn-sub-east" class="sub-tab-btn active" onclick="switchMap('east')">東館</button>
+      <button id="btn-sub-west" class="sub-tab-btn" onclick="switchMap('west')">西館</button>
+      <button id="btn-sub-food" class="sub-tab-btn" onclick="switchMap('food')">飲食エリア</button>
+    </div>
 
-    <h3>獲得スタンプ一覧</h3>
-    <div class="stamp-grid">
-      <div id="stamp-booth1" class="stamp-box">ブース 1</div>
-      <div id="stamp-booth2" class="stamp-box">ブース 2</div>
-      <div id="stamp-booth3" class="stamp-box">ブース 3</div>
+    <!-- 東館マップ（ピン1〜ピン6） -->
+    <div id="map-east" class="map-section active">
+      <div class="map-container">
+        <img src="map_east.png" alt="東館マップ" class="map-image" onerror="this.src='https://via.placeholder.com/400x300?text=East+Building+Map'">
+        <!-- ピン1: 中2 -->
+        <svg id="pin-east-1" class="map-pin" data-stamp="booth1" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン2: 中3 -->
+        <svg id="pin-east-2" class="map-pin" data-stamp="booth2" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン3: 自衛隊（booth15に紐付け） -->
+        <svg id="pin-east-3" class="map-pin" data-stamp="booth15" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン4: 中1 -->
+        <svg id="pin-east-4" class="map-pin" data-stamp="booth4" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン5: 高2-3 -->
+        <svg id="pin-east-5" class="map-pin" data-stamp="booth5" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン6: 合同展示（一覧ページへ飛ぶ） -->
+        <svg id="pin-east-6" class="map-pin" data-stamp="booth3" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+    </div>
+
+    <!-- 西館マップ（ピン7〜ピン11） -->
+    <div id="map-west" class="map-section">
+      <div class="map-container">
+        <img src="map_west.png" alt="西館マップ" class="map-image" onerror="this.src='https://via.placeholder.com/400x300?text=West+Building+Map'">
+        <!-- ピン7: 高2-2 -->
+        <svg id="pin-west-7" class="map-pin" data-stamp="booth7" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン8: 高1-2 -->
+        <svg id="pin-west-8" class="map-pin" data-stamp="booth8" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン9: 高2-1 -->
+        <svg id="pin-west-9" class="map-pin" data-stamp="booth9" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン10: 高1-1 -->
+        <svg id="pin-west-10" class="map-pin" data-stamp="booth10" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン11: ボート部 -->
+        <svg id="pin-west-11" class="map-pin" data-stamp="booth11" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/ボート部?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+    </div>
+
+    <!-- 飲食エリアマップ（ピン12〜ピン15） -->
+    <div id="map-food" class="map-section">
+      <div class="map-container">
+        <img src="map_food.png" alt="飲食エリアマップ" class="map-image" onerror="this.src='https://via.placeholder.com/400x300?text=Food+Area+Map'">
+        <!-- ピン12: 高1-3 -->
+        <svg id="pin-food-12" class="map-pin" data-stamp="booth12" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン13: 高3-2 -->
+        <svg id="pin-food-13" class="map-pin" data-stamp="booth13" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン14: 高3-1 -->
+        <svg id="pin-food-14" class="map-pin" data-stamp="booth14" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン15: 自衛隊（booth15に紐付け） -->
+        <svg id="pin-food-15" class="map-pin" data-stamp="booth15" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
     </div>
   </div>
 
-  <!-- 【画面2】校内マップ画面 -->
-  <div id="page-map" class="page-content">
-    <h3>校内マップ</h3>
-    <p style="font-size: 12px; color: #666;">※スタンプをゲットするとピンの色が赤に変わります</p>
-    <div class="map-container">      
-    <img src="Map1.png" alt="校内マップ" class="map-image">
-      <div id="pin-booth1" class="map-pin">1</div>
-      <div id="pin-booth2" class="map-pin">2</div>
-      <div id="pin-booth3" class="map-pin">3</div>
+  <!-- 【右画面】スタンプラリーエリア (15個) -->
+  <div id="page-stamp" class="page-content">
+    <button id="start-scan-btn" class="scan-btn" onclick="startScanner()">📷 カメラでQRを読み込む</button>
+    <div id="reader" style="display:none;"></div>
+
+    <!-- ⑥ 15スタンプ (5・5・5表示) -->
+    <div class="stamp-group">
+      <div class="stamp-group-title">東館エリア</div>
+      <div class="stamp-grid">
+        <div id="stamp-booth1" class="stamp-box"><span>1</span><span style="font-size:10px;">中2</span></div>
+        <div id="stamp-booth2" class="stamp-box"><span>2</span><span style="font-size:10px;">中3</span></div>
+        <div id="stamp-booth3" class="stamp-box"><span>3</span><span style="font-size:10px;">合同展示</span></div>
+        <div id="stamp-booth4" class="stamp-box"><span>4</span><span style="font-size:10px;">中1</span></div>
+        <div id="stamp-booth5" class="stamp-box"><span>5</span><span style="font-size:10px;">高2-3</span></div>
+      </div>
+    </div>
+
+    <div class="stamp-group">
+      <div class="stamp-group-title">西館エリア</div>
+      <div class="stamp-grid">
+        <div id="stamp-booth6" class="stamp-box"><span>6</span><span style="font-size:10px;">指定待ち</span></div>
+        <div id="stamp-booth7" class="stamp-box"><span>7</span><span style="font-size:10px;">高2-2</span></div>
+        <div id="stamp-booth8" class="stamp-box"><span>8</span><span style="font-size:10px;">高1-2</span></div>
+        <div id="stamp-booth9" class="stamp-box"><span>9</span><span style="font-size:10px;">高2-1</span></div>
+        <div id="stamp-booth10" class="stamp-box"><span>10</span><span style="font-size:10px;">高1-1</span></div>
+      </div>
+    </div>
+
+    <div class="stamp-group">
+      <div class="stamp-group-title">飲食・その他</div>
+      <div class="stamp-grid">
+        <div id="stamp-booth11" class="stamp-box"><span>11</span><span style="font-size:9px;">ボート部</span></div>
+        <div id="stamp-booth12" class="stamp-box"><span>12</span><span style="font-size:10px;">高1-3</span></div>
+        <div id="stamp-booth13" class="stamp-box"><span>13</span><span style="font-size:10px;">高3-2</span></div>
+        <div id="stamp-booth14" class="stamp-box"><span>14</span><span style="font-size:10px;">高3-1</span></div>
+        <div id="stamp-booth15" class="stamp-box"><span>15</span><span style="font-size:10px;">自衛隊</span></div>
+      </div>
     </div>
   </div>
 
   <script>
-    const STAMPS = ["booth1", "booth2", "booth3"];
+    // 15個のスタンプIDキー
+    const STAMPS = Array.from({length: 15}, (_, i) => `booth${i + 1}`);
     let html5QrcodeScanner = null;
 
     window.onload = function() {
       updateUI();
     };
 
-    // 画面切り替え処理
-    function switchTab(tabName) {
-      // カメラが起動中なら停止する
+    // メインタブ切り替え
+    function switchMainTab(tabName) {
       stopScanner();
-
-      // タブのボタンと表示エリアを一度すべて非アクティブにする
-      document.getElementById('btn-stamp').classList.remove('active');
       document.getElementById('btn-map').classList.remove('active');
-      document.getElementById('page-stamp').classList.remove('active');
+      document.getElementById('btn-stamp').classList.remove('active');
       document.getElementById('page-map').classList.remove('active');
+      document.getElementById('page-stamp').classList.remove('active');
 
-      // 選択されたタブだけを表示する
-      if (tabName === 'stamp') {
-        document.getElementById('btn-stamp').classList.add('active');
-        document.getElementById('page-stamp').classList.add('active');
-      } else if (tabName === 'map') {
+      if (tabName === 'map') {
         document.getElementById('btn-map').classList.add('active');
         document.getElementById('page-map').classList.add('active');
+      } else {
+        document.getElementById('btn-stamp').classList.add('active');
+        document.getElementById('page-stamp').classList.add('active');
       }
     }
 
+    // マップサブタブ切り替え
+    function switchMap(mapName) {
+      document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.map-section').forEach(sec => sec.classList.remove('active'));
+
+      document.getElementById(`btn-sub-${mapName}`).classList.add('active');
+      document.getElementById(`map-${mapName}`).classList.add('active');
+    }
+
+    // Googleサイトへジャンプ
+    function openLink(url) {
+      if (url && url !== '#') {
+        window.open(url, '_blank');
+      }
+    }
+
+    // カメラ起動処理
     function startScanner() {
       document.getElementById('reader').style.display = 'block';
       document.getElementById('start-scan-btn').style.display = 'none';
@@ -184,29 +267,24 @@
       }
     }
 
+    // UIおよびピン（未訪問:赤 / 訪問済:緑）の表示更新
     function updateUI() {
       STAMPS.forEach(boothId => {
         const isAcquired = localStorage.getItem("stamp_" + boothId) === "true";
         
-        // スタンプ枠の更新
+        // スタンプ枠
         const stampElement = document.getElementById("stamp-" + boothId);
         if (stampElement) {
-          if (isAcquired) {
-            stampElement.classList.add("acquired");
-          } else {
-            stampElement.classList.remove("acquired");
-          }
+          if (isAcquired) stampElement.classList.add("acquired");
+          else stampElement.classList.remove("acquired");
         }
 
-        // 地図ピンの更新
-        const pinElement = document.getElementById("pin-" + boothId);
-        if (pinElement) {
-          if (isAcquired) {
-            pinElement.classList.add("acquired");
-          } else {
-            pinElement.classList.remove("acquired");
-          }
-        }
+        // マップのピン（紐付けられたすべてのピンを赤/緑切り替え）
+        const pins = document.querySelectorAll(`.map-pin[data-stamp="${boothId}"]`);
+        pins.forEach(pin => {
+          if (isAcquired) pin.classList.add("acquired");
+          else pin.classList.remove("acquired");
+        });
       });
     }
   </script>
