@@ -68,7 +68,7 @@
     .stamp-group { margin-bottom: 20px; }
     .stamp-group-title { font-size: 16px; font-weight: bold; color: #495057; text-align: left; max-width: 350px; margin: 0 auto 8px auto; border-bottom: 2px solid #dee2e6; padding-bottom: 4px; }
     .stamp-grid { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; max-width: 360px; margin: 0 auto; }
-    .stamp-box { width: 62px; height: 62px; border: 2px solid #6c757d; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; background-color: #ffffff; font-size: 12px; box-sizing: border-box; padding: 4px; cursor: pointer; text-align: center; }
+    .stamp-box { width: 62px; height: 62px; border: 2px solid #6c757d; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; background-color: #ffffff; font-size: 12px; box-sizing: border-box; padding: 4px; text-align: center; }
     .stamp-box.acquired { background-color: #d4edda; border-color: #28a745; color: #155724; position: relative; }
     .stamp-box.acquired::after { content: "済"; position: absolute; font-size: 28px; color: #28a745; font-weight: bold; opacity: 0.8; }
     
@@ -154,39 +154,39 @@
     <button id="start-scan-btn" class="scan-btn" onclick="startScanner()">📷 カメラでQRを読み込む</button>
     <div id="reader" style="display:none;"></div>
 
-    <!-- 東館エリア -->
+    <!-- 東館エリア (中1, 中2, 中3, 高2-3, 茶華道・写真・美術・書道) -->
     <div class="stamp-group">
       <div class="stamp-group-title">東館エリア</div>
       <div class="stamp-grid">
-        <div id="stamp-booth1" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中2?authuser=0')"><span style="font-size:12px;">中2</span></div>
-        <div id="stamp-booth2" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中3?authuser=0')"><span style="font-size:12px;">中3</span></div>
-        <div id="stamp-booth4" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中1?authuser=0')"><span style="font-size:12px;">中1</span></div>
-        <div id="stamp-booth5" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-3?authuser=0')"><span style="font-size:12px;">高2-3</span></div>
-        <div id="stamp-booth6" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介')"><span style="font-size:8px; line-height:1.1;">茶華道・写真<br>美術・書道</span></div>
+        <div id="stamp-booth4" class="stamp-box"><span style="font-size:12px;">中1</span></div>
+        <div id="stamp-booth1" class="stamp-box"><span style="font-size:12px;">中2</span></div>
+        <div id="stamp-booth2" class="stamp-box"><span style="font-size:12px;">中3</span></div>
+        <div id="stamp-booth5" class="stamp-box"><span style="font-size:12px;">高2-3</span></div>
+        <div id="stamp-booth6" class="stamp-box"><span style="font-size:8px; line-height:1.1;">茶華道・写真<br>美術・書道</span></div>
       </div>
     </div>
 
-    <!-- 西館エリア -->
+    <!-- 西館エリア (高1-1, 高1-2, 高2-1, 高2-2, ボート部) -->
     <div class="stamp-group">
       <div class="stamp-group-title">西館エリア</div>
       <div class="stamp-grid">
-        <div id="stamp-booth7" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-2?authuser=0')"><span style="font-size:12px;">高2-2</span></div>
-        <div id="stamp-booth8" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-2?authuser=0')"><span style="font-size:12px;">高1-2</span></div>
-        <div id="stamp-booth9" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-1?authuser=0')"><span style="font-size:12px;">高2-1</span></div>
-        <div id="stamp-booth10" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-1?authuser=0')"><span style="font-size:12px;">高1-1</span></div>
-        <div id="stamp-booth11" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/ボート部?authuser=0')"><span style="font-size:10px;">ボート部</span></div>
+        <div id="stamp-booth10" class="stamp-box"><span style="font-size:12px;">高1-1</span></div>
+        <div id="stamp-booth8" class="stamp-box"><span style="font-size:12px;">高1-2</span></div>
+        <div id="stamp-booth9" class="stamp-box"><span style="font-size:12px;">高2-1</span></div>
+        <div id="stamp-booth7" class="stamp-box"><span style="font-size:12px;">高2-2</span></div>
+        <div id="stamp-booth11" class="stamp-box"><span style="font-size:10px;">ボート部</span></div>
       </div>
     </div>
 
-    <!-- 飲食・その他 -->
+    <!-- 飲食・その他 (高1-3, 高3-1, 高3-2, 家庭部, 自衛隊) -->
     <div class="stamp-group">
       <div class="stamp-group-title">飲食・その他</div>
       <div class="stamp-grid">
-        <div id="stamp-booth12" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-3?authuser=0')"><span style="font-size:12px;">高1-3</span></div>
-        <div id="stamp-booth13" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-2?authuser=0')"><span style="font-size:12px;">高3-2</span></div>
-        <div id="stamp-booth14" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-1?authuser=0')"><span style="font-size:12px;">高3-1</span></div>
-        <div id="stamp-booth15" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/家庭部?authuser=0')"><span style="font-size:11px;">家庭部</span></div>
-        <div id="stamp-booth16" class="stamp-box" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊?authuser=0')"><span style="font-size:11px;">自衛隊</span></div>
+        <div id="stamp-booth12" class="stamp-box"><span style="font-size:12px;">高1-3</span></div>
+        <div id="stamp-booth14" class="stamp-box"><span style="font-size:12px;">高3-1</span></div>
+        <div id="stamp-booth13" class="stamp-box"><span style="font-size:12px;">高3-2</span></div>
+        <div id="stamp-booth15" class="stamp-box"><span style="font-size:11px;">家庭部</span></div>
+        <div id="stamp-booth16" class="stamp-box"><span style="font-size:11px;">自衛隊</span></div>
       </div>
     </div>
   </div>
@@ -226,7 +226,7 @@
       document.getElementById(`map-${mapName}`).classList.add('active');
     }
 
-    // Googleサイトへジャンプ
+    // Googleサイトへジャンプ（マップピンから利用）
     function openLink(url) {
       if (url && url !== '#') {
         window.open(url, '_blank');
