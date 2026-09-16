@@ -26,49 +26,35 @@
     .map-image { width: 100%; display: block; }
 
     /* Googleマップ風ピンデザイン (未訪問:赤 / 訪問済:緑) */
-   /* ピンのサイズ調整 */
-.map-pin {
-  position: absolute;
-  width: 24px;  /* ここを小さくする（例: 32px → 24px） */
-  height: 24px; /* ここを小さくする（例: 32px → 24px） */
-  transform: translate(-50%, -100%);
-  cursor: pointer;
-  z-index: 10;
-}
-
-/* ピンの中のSVGも自動でリサイズされるように指定 */
-.map-pin svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+    .map-pin { position: absolute; width: 24px; height: 24px; transform: translate(-50%, -100%); cursor: pointer; z-index: 10; }
+    .map-pin svg { width: 100%; height: 100%; display: block; }
     
     /* ピンの色指定 */
     .map-pin path { fill: #dc3545; } /* 未訪問: 赤 */
     .map-pin.acquired path { fill: #28a745; } /* 訪問済: 緑 */
 
-    /* ピンの座標設定（※実際の画像に合わせて % を調整してください） */
-    /* 東館（6個: ピン1〜ピン6） */
+    /* ピンの座標設定 */
+    /* 東館（6個） */
     #pin-east-1 { top: 21%; left: 49%; } /* 中2 */
     #pin-east-2 { top: 21%; left: 62%; } /* 中3 */
-    #pin-east-3 { top: 30%; left: 45%; } /* 自衛隊（雨天時・booth16連動） */
+    #pin-east-3 { top: 30%; left: 45%; } /* 自衛隊（雨天時） */
     #pin-east-4 { top: 52%; left: 43.5%; } /* 中1 */
     #pin-east-5 { top: 55%; left: 75%; } /* 高2-3 */
     #pin-east-6 { top: 69%; left: 38%; } /* 茶華道・写真・美術・書道部 */
 
-    /* 西館（5個: ピン7〜ピン11） */
+    /* 西館（5個） */
     #pin-west-7 { top: 35%; left: 65%; }  /* 高2-2 */
     #pin-west-8 { top: 57%; left: 25%; }  /* 高1-2 */
     #pin-west-9 { top: 57%; left: 43%; }  /* 高2-1 */
     #pin-west-10 { top: 62.5%; left: 57%; } /* 高1-1 */
     #pin-west-11 { top: 62.5%; left: 66%; } /* ボート部 */
 
-    /* 飲食エリア（5個: ピン12〜ピン16） */
+    /* 飲食エリア（5個） */
     #pin-food-12 { top: 24%; left: 34.5%; } /* 高1-3 */
     #pin-food-13 { top: 35%; left: 46%; } /* 高3-2 */
     #pin-food-14 { top: 55%; left: 46%; } /* 高3-1 */
     #pin-food-15 { top: 75%; left: 46%; } /* 家庭部 */
-    #pin-food-16 { top: 50%; left: 14%; } /* 自衛隊（晴天時・booth16連動） */
+    #pin-food-16 { top: 50%; left: 14%; } /* 自衛隊（晴天時） */
 
     /* スタンプカード表示 (エリア別レイアウト) */
     .stamp-group { margin-bottom: 20px; }
@@ -101,56 +87,56 @@
       <button id="btn-sub-food" class="sub-tab-btn" onclick="switchMap('food')">飲食エリア</button>
     </div>
 
-    <!-- 東館マップ（ピン1〜ピン6） -->
+    <!-- 東館マップ -->
     <div id="map-east" class="map-section active">
       <div class="map-container">
         <img src="map_east.png" alt="東館マップ" class="map-image" onerror="this.src='https://via.placeholder.com/400x300?text=East+Building+Map'">
         <!-- ピン1: 中2 -->
-        <svg id="pin-east-1" class="map-pin" data-stamp="booth1" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-east-1" class="map-pin" data-stamp="4f8x92aa" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン2: 中3 -->
-        <svg id="pin-east-2" class="map-pin" data-stamp="booth2" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        <!-- ピン3: 自衛隊（booth16に紐付け） -->
-        <svg id="pin-east-3" class="map-pin" data-stamp="booth16" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊ブース?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-east-2" class="map-pin" data-stamp="m7p3k1vb" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン3: 自衛隊（3g7w1x9o） -->
+        <svg id="pin-east-3" class="map-pin" data-stamp="3g7w1x9o" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊ブース?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン4: 中1 -->
-        <svg id="pin-east-4" class="map-pin" data-stamp="booth4" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-east-4" class="map-pin" data-stamp="2b9w5x8c" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/中1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン5: 高2-3 -->
-        <svg id="pin-east-5" class="map-pin" data-stamp="booth5" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-east-5" class="map-pin" data-stamp="t4n8r6qd" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン6: 茶華道・写真・美術・書道部 -->
-        <svg id="pin-east-6" class="map-pin" data-stamp="booth6" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/茶華道写真美術書道?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-east-6" class="map-pin" data-stamp="9z1c7v3e" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/茶華道写真美術書道?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
       </div>
     </div>
 
-    <!-- 西館マップ（ピン7〜ピン11） -->
+    <!-- 西館マップ -->
     <div id="map-west" class="map-section">
       <div class="map-container">
         <img src="map_west.png" alt="西館マップ" class="map-image" onerror="this.src='https://via.placeholder.com/400x300?text=West+Building+Map'">
         <!-- ピン7: 高2-2 -->
-        <svg id="pin-west-7" class="map-pin" data-stamp="booth7" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-west-7" class="map-pin" data-stamp="j5k2m8pf" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン8: 高1-2 -->
-        <svg id="pin-west-8" class="map-pin" data-stamp="booth8" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-west-8" class="map-pin" data-stamp="6x3g9w1g" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン9: 高2-1 -->
-        <svg id="pin-west-9" class="map-pin" data-stamp="booth9" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-west-9" class="map-pin" data-stamp="r2t7b4nh" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高2-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン10: 高1-1 -->
-        <svg id="pin-west-10" class="map-pin" data-stamp="booth10" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-west-10" class="map-pin" data-stamp="5v1c8x9i" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン11: ボート部 -->
-        <svg id="pin-west-11" class="map-pin" data-stamp="booth11" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/ボート部?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-west-11" class="map-pin" data-stamp="p3k6m2jj" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/ボート部?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
       </div>
     </div>
 
-    <!-- 飲食エリアマップ（ピン12〜ピン16） -->
+    <!-- 飲食エリアマップ -->
     <div id="map-food" class="map-section">
       <div class="map-container">
         <img src="map_food.png" alt="飲食エリアマップ" class="map-image" onerror="this.src='https://via.placeholder.com/400x300?text=Food+Area+Map'">
         <!-- ピン12: 高1-3 -->
-        <svg id="pin-food-12" class="map-pin" data-stamp="booth12" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-food-12" class="map-pin" data-stamp="8w4q9z1k" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高1-3?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン13: 高3-2 -->
-        <svg id="pin-food-13" class="map-pin" data-stamp="booth13" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-food-13" class="map-pin" data-stamp="n7r3t5bl" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-2?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン14: 高3-1 -->
-        <svg id="pin-food-14" class="map-pin" data-stamp="booth14" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-food-14" class="map-pin" data-stamp="1v6c9x2m" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/高3-1?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <!-- ピン15: 家庭部 -->
-        <svg id="pin-food-15" class="map-pin" data-stamp="booth15" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/家庭部?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        <!-- ピン16: 自衛隊（booth16に紐付け） -->
-        <svg id="pin-food-16" class="map-pin" data-stamp="booth16" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg id="pin-food-15" class="map-pin" data-stamp="m8p2k4jn" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/家庭部?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <!-- ピン16: 自衛隊（3g7w1x9o） -->
+        <svg id="pin-food-16" class="map-pin" data-stamp="3g7w1x9o" onclick="openLink('https://sites.google.com/soukai-school.jp/school-festival2026/部活クラス展示紹介/自衛隊?authuser=0')" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
       </div>
     </div>
   </div>
@@ -164,11 +150,11 @@
     <div class="stamp-group">
       <div class="stamp-group-title">東館エリア</div>
       <div class="stamp-grid">
-        <div id="stamp-booth4" class="stamp-box"><span style="font-size:12px;">中1</span></div>
-        <div id="stamp-booth1" class="stamp-box"><span style="font-size:12px;">中2</span></div>
-        <div id="stamp-booth2" class="stamp-box"><span style="font-size:12px;">中3</span></div>
-        <div id="stamp-booth5" class="stamp-box"><span style="font-size:12px;">高2-3</span></div>
-        <div id="stamp-booth6" class="stamp-box"><span style="font-size:8px; line-height:1.1;">茶華道・写真<br>美術・書道</span></div>
+        <div id="stamp-2b9w5x8c" class="stamp-box"><span style="font-size:12px;">中1</span></div>
+        <div id="stamp-4f8x92aa" class="stamp-box"><span style="font-size:12px;">中2</span></div>
+        <div id="stamp-m7p3k1vb" class="stamp-box"><span style="font-size:12px;">中3</span></div>
+        <div id="stamp-t4n8r6qd" class="stamp-box"><span style="font-size:12px;">高2-3</span></div>
+        <div id="stamp-9z1c7v3e" class="stamp-box"><span style="font-size:8px; line-height:1.1;">茶華道・写真<br>美術・書道</span></div>
       </div>
     </div>
 
@@ -176,11 +162,11 @@
     <div class="stamp-group">
       <div class="stamp-group-title">西館エリア</div>
       <div class="stamp-grid">
-        <div id="stamp-booth10" class="stamp-box"><span style="font-size:12px;">高1-1</span></div>
-        <div id="stamp-booth8" class="stamp-box"><span style="font-size:12px;">高1-2</span></div>
-        <div id="stamp-booth9" class="stamp-box"><span style="font-size:12px;">高2-1</span></div>
-        <div id="stamp-booth7" class="stamp-box"><span style="font-size:12px;">高2-2</span></div>
-        <div id="stamp-booth11" class="stamp-box"><span style="font-size:10px;">ボート部</span></div>
+        <div id="stamp-5v1c8x9i" class="stamp-box"><span style="font-size:12px;">高1-1</span></div>
+        <div id="stamp-6x3g9w1g" class="stamp-box"><span style="font-size:12px;">高1-2</span></div>
+        <div id="stamp-r2t7b4nh" class="stamp-box"><span style="font-size:12px;">高2-1</span></div>
+        <div id="stamp-j5k2m8pf" class="stamp-box"><span style="font-size:12px;">高2-2</span></div>
+        <div id="stamp-p3k6m2jj" class="stamp-box"><span style="font-size:10px;">ボート部</span></div>
       </div>
     </div>
 
@@ -188,18 +174,22 @@
     <div class="stamp-group">
       <div class="stamp-group-title">飲食・その他</div>
       <div class="stamp-grid">
-        <div id="stamp-booth12" class="stamp-box"><span style="font-size:12px;">高1-3</span></div>
-        <div id="stamp-booth14" class="stamp-box"><span style="font-size:12px;">高3-1</span></div>
-        <div id="stamp-booth13" class="stamp-box"><span style="font-size:12px;">高3-2</span></div>
-        <div id="stamp-booth15" class="stamp-box"><span style="font-size:11px;">家庭部</span></div>
-        <div id="stamp-booth16" class="stamp-box"><span style="font-size:11px;">自衛隊</span></div>
+        <div id="stamp-8w4q9z1k" class="stamp-box"><span style="font-size:12px;">高1-3</span></div>
+        <div id="stamp-1v6c9x2m" class="stamp-box"><span style="font-size:12px;">高3-1</span></div>
+        <div id="stamp-n7r3t5bl" class="stamp-box"><span style="font-size:12px;">高3-2</span></div>
+        <div id="stamp-m8p2k4jn" class="stamp-box"><span style="font-size:11px;">家庭部</span></div>
+        <div id="stamp-3g7w1x9o" class="stamp-box"><span style="font-size:11px;">自衛隊</span></div>
       </div>
     </div>
   </div>
 
   <script>
-    // 全16個のスタンプIDキー
-    const STAMPS = Array.from({length: 16}, (_, i) => `booth${i + 1}`);
+    // 全15個のスタンプIDリスト（ランダム文字列）
+    const STAMPS = [
+      "4f8x92aa", "m7p3k1vb", "2b9w5x8c", "t4n8r6qd", "9z1c7v3e",
+      "j5k2m8pf", "6x3g9w1g", "r2t7b4nh", "5v1c8x9i", "p3k6m2jj",
+      "8w4q9z1k", "n7r3t5bl", "1v6c9x2m", "m8p2k4jn", "3g7w1x9o"
+    ];
     let html5QrcodeScanner = null;
 
     window.onload = function() {
@@ -232,7 +222,7 @@
       document.getElementById(`map-${mapName}`).classList.add('active');
     }
 
-    // Googleサイトへジャンプ（マップピンから利用）
+    // Googleサイトへジャンプ
     function openLink(url) {
       if (url && url !== '#') {
         window.open(url, '_blank');
@@ -259,7 +249,7 @@
     function onScanSuccess(decodedText) {
       if (STAMPS.includes(decodedText)) {
         localStorage.setItem("stamp_" + decodedText, "true");
-        alert("スタンプを獲得しました！: " + decodedText);
+        alert("スタンプを獲得しました！");
         updateUI();
         stopScanner();
       } else {
