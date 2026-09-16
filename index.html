@@ -26,19 +26,22 @@
     .map-image { width: 100%; display: block; }
 
     /* Googleマップ風ピンデザイン (未訪問:赤 / 訪問済:緑) */
-    /* ピンの基本設定（通常時） */
-    .map-pin {
-    position: absolute;
-    transform: translate(-50%, -100%); /* 先端を基準に固定 */
-    cursor: pointer;
-    z-index: 10;
-    }
+   /* ピンのサイズ調整 */
+.map-pin {
+  position: absolute;
+  width: 24px;  /* ここを小さくする（例: 32px → 24px） */
+  height: 24px; /* ここを小さくする（例: 32px → 24px） */
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  z-index: 10;
+}
 
-    /* 触った時（hover時） */
-    .map-pin:hover {
-    transform: translate(-50%, -100%); /* 先端基準を維持してブレさせない */
-    z-index: 20;
-    }
+/* ピンの中のSVGも自動でリサイズされるように指定 */
+.map-pin svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
     
     /* ピンの色指定 */
     .map-pin path { fill: #dc3545; } /* 未訪問: 赤 */
