@@ -66,6 +66,32 @@
     
     #reader { width: 100%; max-width: 400px; margin: 10px auto; border: 2px dashed #ccc; }
     .scan-btn { padding: 14px 28px; font-size: 18px; border-radius: 8px; border: none; background: #28a745; color: white; cursor: pointer; font-weight: bold; margin-bottom: 15px; }
+
+    /* 画面下部の進捗・案内用メッセージエリア */
+    .stamp-status-box {
+      margin: 20px auto;
+      padding: 15px;
+      max-width: 350px;
+      background-color: #ffffff;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      color: #333;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      box-sizing: border-box;
+    }
+    .stamp-count-text {
+      font-size: 18px;
+      color: #007bff;
+      margin-bottom: 6px;
+    }
+    .achievement-box {
+      background-color: #fff3cd;
+      border-color: #ffeeba;
+      color: #856404;
+    }
   </style>
 </head>
 <body>
@@ -181,6 +207,14 @@
         <div id="stamp-3g7w1x9o" class="stamp-box"><span style="font-size:11px;">自衛隊</span></div>
       </div>
     </div>
+
+    <!-- 画面下部の進捗 & 案内表示エリア -->
+    <div id="stamp-info-box" class="stamp-status-box">
+      <div id="stamp-count-display" class="stamp-count-text">現在のスタンプ取得数: 0 / 15個</div>
+      <div id="stamp-notice-text">
+        12個で景品のお菓子GET! 15個コンプリートすればさらにもう1セット分もらえる！
+      </div>
+    </div>
   </div>
 
   <script>
@@ -262,12 +296,14 @@
         localStorage.setItem("stamp_" + decodedText, "true");
         stopScanner();
         
-        // UI更新 & 全達成チェック
-        const isAllComplete = updateUI();
+        // UI更新 & 獲得数の取得
+        const acquiredCount = updateUI();
 
-        // ② コンプリート判定による演出分岐
-        if (isAllComplete) {
-          alert("🎉🎉🎉🎉🎉🎉🎉🎉🎉\nおめでとうございます！\nすべてのスタンプを集めてコンプリートしました！\n景品交換所へ向かってください！\n🎉🎉🎉🎉🎉🎉🎉🎉🎉");
+        // ② コンプリート / 12個以上獲得 / 通常達成のメッセージ分岐
+        if (acquiredCount === 15) {
+          alert("🎉🎉🎉🎉🎉🎉🎉🎉🎉\nコンプリートおめでとうございます！\nコンピューター室へ景品を取りに来てください！\n🎉🎉🎉🎉🎉🎉🎉🎉🎉");
+        } else if (acquiredCount >= 12) {
+          alert("🎁🎁🎁🎁🎁🎁🎁🎁🎁\n12個以上スタンプ獲得おめでとうございます！\nコンピューター室へ景品を取りに来てください！\n🎁🎁🎁🎁🎁🎁🎁🎁🎁");
         } else {
           alert("スタンプを獲得しました！");
         }
@@ -288,7 +324,7 @@
       }
     }
 
-    // UIおよびピン（未訪問:赤 / 訪問済:緑）の表示更新（戻り値：全獲得したかどうか）
+    // UIおよびピン・文字表示の更新（戻り値：獲得したスタンプの個数）
     function updateUI() {
       let acquiredCount = 0;
 
@@ -311,8 +347,27 @@
         });
       });
 
-      // 全15個集まったかどうかを判定して返す
-      return acquiredCount === STAMPS.length;
+      // 画面下部エリアの表示更新
+      const countDisplay = document.getElementById("stamp-count-display");
+      const noticeText = document.getElementById("stamp-notice-text");
+      const infoBox = document.getElementById("stamp-info-box");
+
+      if (countDisplay && noticeText && infoBox) {
+        countDisplay.textContent = `現在のスタンプ取得数: ${acquiredCount} / 15個`;
+
+        if (acquiredCount === 15) {
+          infoBox.classList.add("achievement-box");
+          noticeText.innerHTML = "🎉 <strong>コンプリートおめでとうございます！</strong><br>コンピューター室へ景品を取りに来てください！";
+        } else if (acquiredCount >= 12) {
+          infoBox.classList.add("achievement-box");
+          noticeText.innerHTML = "🎁 <strong>12個以上のスタンプ獲得おめでとうございます！</strong><br>コンピューター室へ景品を取りに来てください！<br><span style='font-size:12px; color:#6c757d;'>※あと" + (15 - acquiredCount) + "個でさらにもう1セットもらえます！</span>";
+        } else {
+          infoBox.classList.remove("achievement-box");
+          noticeText.textContent = "12個で景品のお菓子GET! 15個コンプリートすればさらにもう1セット分もらえる！";
+        }
+      }
+
+      return acquiredCount;
     }
   </script>
 </body>
