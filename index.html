@@ -246,12 +246,32 @@
       });
     }
 
+    // QRコード読み取り成功時の処理
     function onScanSuccess(decodedText) {
       if (STAMPS.includes(decodedText)) {
+        // ① すでに読み取り済みかチェック
+        const alreadyAcquired = localStorage.getItem("stamp_" + decodedText) === "true";
+        
+        if (alreadyAcquired) {
+          alert("このQRコードは、すでに読み取り済みです！");
+          stopScanner();
+          return;
+        }
+
+        // 新規獲得処理
         localStorage.setItem("stamp_" + decodedText, "true");
-        alert("スタンプを獲得しました！");
-        updateUI();
         stopScanner();
+        
+        // UI更新 & 全達成チェック
+        const isAllComplete = updateUI();
+
+        // ② コンプリート判定による演出分岐
+        if (isAllComplete) {
+          alert("🎉🎉🎉🎉🎉🎉🎉🎉🎉\nおめでとうございます！\nすべてのスタンプを集めてコンプリートしました！\n景品交換所へ向かってください！\n🎉🎉🎉🎉🎉🎉🎉🎉🎉");
+        } else {
+          alert("スタンプを獲得しました！");
+        }
+
       } else {
         alert("無効なQRコードです");
       }
@@ -268,10 +288,13 @@
       }
     }
 
-    // UIおよびピン（未訪問:赤 / 訪問済:緑）の表示更新
+    // UIおよびピン（未訪問:赤 / 訪問済:緑）の表示更新（戻り値：全獲得したかどうか）
     function updateUI() {
+      let acquiredCount = 0;
+
       STAMPS.forEach(boothId => {
         const isAcquired = localStorage.getItem("stamp_" + boothId) === "true";
+        if (isAcquired) acquiredCount++;
         
         // スタンプ枠
         const stampElement = document.getElementById("stamp-" + boothId);
@@ -287,6 +310,9 @@
           else pin.classList.remove("acquired");
         });
       });
+
+      // 全15個集まったかどうかを判定して返す
+      return acquiredCount === STAMPS.length;
     }
   </script>
 </body>
